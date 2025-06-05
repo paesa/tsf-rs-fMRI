@@ -34,12 +34,6 @@ tsf-rs-fMRI/
 * statsmodels
 * scikit-learn
 
-Install dependencies with:
-
-```bash
-pip install -r requirements.txt
-```
-
 ## 📊 Running the Analysis
 
 1. **Prepare the data:**
