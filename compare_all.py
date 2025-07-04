@@ -11,7 +11,7 @@ np.set_printoptions(linewidth=100)
 
 DRAW = True
 save_figures = True
-COMP = True
+COMP = False
 n_permutations = 100000
 folder = "results/"
 group1 = ['01_g4s01.txt', '02_g4s05.txt', '03_g4s11.txt', '04_g5s01.txt', '05_g5s02.txt', '06_g5s06.txt',
@@ -56,14 +56,22 @@ n_properties = values.shape[1]
 n_levels = values.shape[2]
 
 if DRAW:
-    go.plot_properties(values_1[:, 0, :], values_2[:, 0, :], "Mean degree", save_figures)
-    go.plot_properties(values_1[:, 1, :], values_2[:, 1, :], "Max degree", save_figures)
-    go.plot_properties(values_1[:, 2, :], values_2[:, 2, :], "Rank", save_figures)
-    go.plot_properties(values_1[:, 3, :], values_2[:, 3, :], "B0", save_figures)
-    go.plot_properties(values_1[:, 4, :], values_2[:, 4, :], "B1", save_figures)
-    go.plot_properties(values_1[:, 5, :], values_2[:, 5, :], "log-BED", save_figures)
-    go.plot_properties(values_1[:, 6, :], values_2[:, 6, :], "log-PED", save_figures)
-    go.plot_properties(values_1[:, 7, :], values_2[:, 7, :], "n-EDs", save_figures)
+    go.plot_properties(values_1[:, 0, :], values_2[:, 0, :], 
+                       "Mean vertex degree", save_figures, "Mean degree")
+    go.plot_properties(values_1[:, 1, :], values_2[:, 1, :], 
+                       "Max vertex degree", save_figures, "Max degree")
+    go.plot_properties(values_1[:, 2, :], values_2[:, 2, :], 
+                       "Incidence matrix rank", save_figures, "Rank")
+    go.plot_properties(values_1[:, 3, :], values_2[:, 3, :], 
+                       "Number of connected components", save_figures, "B0")
+    go.plot_properties(values_1[:, 4, :], values_2[:, 4, :], 
+                       "Number of 1-dimensional holes", save_figures, "B1")
+    go.plot_properties(values_1[:, 5, :], values_2[:, 5, :], 
+                       "Logarithm of the largest elementary divisor", save_figures, "Log-BED")
+    go.plot_properties(values_1[:, 6, :], values_2[:, 6, :], 
+                       "Logarithm of the product of elementary divisors", save_figures, "Log-PED")
+    go.plot_properties(values_1[:, 7, :], values_2[:, 7, :],
+                       "Number of nontrivial elementary divisors", save_figures, "n-EDs")
 
 if COMP:
     # exclude the properties with zero variance: log-BED, log-PED, n-EDs level 0

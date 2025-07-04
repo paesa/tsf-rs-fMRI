@@ -327,46 +327,73 @@ def load_group_results(group, folder):
         values[i, 7, :] = ned
     return values
 
-def plot_properties(p_g1, p_g2, name, save=False):
+import numpy as np
+import matplotlib.pyplot as plt
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+def plot_properties(p_g1, p_g2, name, save=False, save_filename=None):
     """
     Plot all properties of two groups of graphs on each scale space level.
     p_g1: properties of group 1 (numpy array)
     p_g2: properties of group 2 (numpy array)
-    name: name of the plot
+    name: y-axis label
     save: whether to save the plots as an image
     """
+    # Color variables for easy customization
+    point_color_g1 = 'blue'
+    point_color_g2 = 'red'
+    box_color_g1 = 'lightskyblue'
+    box_color_g2 = 'orange'
+
     l_1 = len(p_g1)
     l_2 = len(p_g2)
     n_subplots = p_g1.shape[1]
-    
+
     plt.figure(figsize=(10, 5))
     plt.suptitle(name, fontsize=16)
+
     for i in range(n_subplots):
         m_1 = p_g1.mean(axis=0)[i]
         m_2 = p_g2.mean(axis=0)[i]
         s_1 = p_g1.std(axis=0)[i]
         s_2 = p_g2.std(axis=0)[i]
-        plt.subplot(2, int(np.round(n_subplots / 2 + 0.4)), i + 1)
-        plt.plot(np.linspace(1, l_1, l_1), p_g1[:,i], '.b', label='Control', markersize=4)
-        plt.plot(np.linspace(l_1 + 1, l_1 + l_2, l_2), p_g2[:,i], '.r', label='ISAD', markersize=4)
-        
-        plt.plot([1, l_1], [m_1, m_1], 'b', linewidth=1)
-        plt.plot([1, l_1], [m_1 - s_1, m_1 - s_1], 'b--', linewidth=1)
-        plt.plot([1, l_1], [m_1 + s_1, m_1 + s_1], 'b--', linewidth=1)
-        plt.fill_between([1, l_1], m_1 - s_1, m_1 + s_1, color='blue', alpha=0.15)
-        
-        plt.plot([l_1 + 1, l_1 + l_2], [m_2, m_2], 'r', linewidth=1)
-        plt.plot([l_1 + 1, l_1 + l_2], [m_2 - s_2, m_2 - s_2], 'r--', linewidth=1)
-        plt.plot([l_1 + 1, l_1 + l_2], [m_2 + s_2, m_2 + s_2], 'r--', linewidth=1)
-        plt.fill_between([l_1 + 1, l_1 + l_2], m_2 - s_2, m_2 + s_2, color='red', alpha=0.15)
-        
-        plt.title("Level " + str(i+1))
-        plt.legend()
+
+        ax = plt.subplot(2, int(np.round(n_subplots / 2 + 0.4)), i + 1)
+
+        # Draw boxes first (Group 1 and Group 2)
+        ax.plot([1, l_1], [m_1, m_1], color=box_color_g1, linewidth=1)
+        ax.plot([1, l_1], [m_1 - s_1, m_1 - s_1], linestyle='--', color=box_color_g1, linewidth=1)
+        ax.plot([1, l_1], [m_1 + s_1, m_1 + s_1], linestyle='--', color=box_color_g1, linewidth=1)
+        ax.fill_between([1, l_1], m_1 - s_1, m_1 + s_1, color=box_color_g1, alpha=0.15)
+
+        ax.plot([l_1 + 1, l_1 + l_2], [m_2, m_2], color=box_color_g2, linewidth=1)
+        ax.plot([l_1 + 1, l_1 + l_2], [m_2 - s_2, m_2 - s_2], linestyle='--', color=box_color_g2, linewidth=1)
+        ax.plot([l_1 + 1, l_1 + l_2], [m_2 + s_2, m_2 + s_2], linestyle='--', color=box_color_g2, linewidth=1)
+        ax.fill_between([l_1 + 1, l_1 + l_2], m_2 - s_2, m_2 + s_2, color=box_color_g2, alpha=0.15)
+
+        # Draw points on top
+        ax.plot(np.linspace(1, l_1, l_1), p_g1[:, i], '.', color=point_color_g1, label='Control', markersize=4)
+        ax.plot(np.linspace(l_1 + 1, l_1 + l_2, l_2), p_g2[:, i], '.', color=point_color_g2, label='ISAD', markersize=4)
+
+        ax.set_title("Level " + str(i + 1))
+
+        # Custom x-axis ticks
+        ax.set_xticks([l_1 / 2, l_1 + l_2 / 2])
+        ax.set_xticklabels(["Controls", "ISAD"])
+
     plt.tight_layout()
     if save:
-        plt.savefig(f"imgs/{name}.png")
+        if save_filename:
+            name = save_filename
+        plt.savefig(f"imgs/{name}.png", dpi=600)
     else:
         plt.show()
+
 
 def violin_plot_properties(p_g1, p_g2, name, save=False):
     """
