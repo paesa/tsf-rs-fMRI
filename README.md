@@ -20,9 +20,17 @@ tsf-rs-fMRI/
 ├── compute_all.py            # Script to compute topological features for all subjects
 ├── compare_all.py            # Statistical tests and plots across groups
 ├── graph_operations.py       # Core functions for loading, building, and analyzing hypergraphs
-├── matrices/                 # Folder for incidence matrices (one per subject)
+├── matrices/                 # Folder for incidence matrices (not included due to licensing)
+│   ├── 01_g4s01.txt          # Example incidence matrix files
+│   └── ...
 ├── results/                  # Folder to store computed descriptor results
+│   ├── TP_01_g4s01.txt       # Topological descriptors for each subject
+│   └── ...
 ├── imgs/                     # Plots generated from comparisons
+│   ├── B0.png                # Example plot of Betti numbers
+│   └── ...
+├── README.md                 # This file
+└── LICENSE                   # License information
 ```
 
 ## 🛆 Requirements
@@ -33,6 +41,7 @@ tsf-rs-fMRI/
 * matplotlib
 * statsmodels
 * scikit-learn
+* joblib
 
 ## 📊 Running the Analysis
 
@@ -45,21 +54,25 @@ tsf-rs-fMRI/
 
 2. **Compute topological descriptors:**
 
-```bash
-python compute_all.py
-```
+   ```bash
+   python compute_all.py
+   ```
+
+   This will:
+
+   * Build incidence matrices from the provided files in `matrices/`
+   * Save descriptors to `results/`
 
 3. **Compare groups and generate plots:**
 
-```bash
-python compare_all.py
-```
+   ```bash
+   python compare_all.py
+   ```
 
-This will:
-
-* Save descriptors to `results/`
-* Generate comparative plots in `imgs/`
-* Run MANOVA, permutation, and OLS statistical tests
+   This will:
+   * Load the computed descriptors from `results/`
+   * Generate comparative plots in `imgs/`
+   * Run MANOVA, permutation, and OLS statistical tests
 
 ## 📊 Output
 
